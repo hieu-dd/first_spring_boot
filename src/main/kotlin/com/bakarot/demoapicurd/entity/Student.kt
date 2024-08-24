@@ -1,10 +1,12 @@
 package com.bakarot.demoapicurd.entity
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.persistence.*
 
 @Entity
 @Table(name = "student")
 data class Student(
+
     @Column(name = "first_name")
     var firstName: String,
     @Column(name = "last_name")
@@ -15,6 +17,7 @@ data class Student(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @JsonProperty("user_id")
     var id: Long = 0
 
     override fun toString(): String {

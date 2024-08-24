@@ -13,7 +13,7 @@ class StudentDaoImpl(private val entityManager: EntityManager) : StudentDao {
     }
 
     override fun findById(id: Long): Student? {
-        TODO("Not yet implemented")
+        return entityManager.find(Student::class.java, id)
     }
 
     override fun findAll(): List<Student> {

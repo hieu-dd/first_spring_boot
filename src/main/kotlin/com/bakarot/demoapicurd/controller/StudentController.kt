@@ -3,9 +3,12 @@ package com.bakarot.demoapicurd.controller
 import com.bakarot.demoapicurd.dao.StudentDao
 import com.bakarot.demoapicurd.entity.Student
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
+@RequestMapping("/api")
 class StudentController(private val studentDao: StudentDao) {
 
     @GetMapping("/save_student")
@@ -22,7 +25,13 @@ class StudentController(private val studentDao: StudentDao) {
     }
 
     @GetMapping("/students")
-    fun getStudents(): String {
-        return studentDao.findAll().joinToString("<br>")
+    fun getStudents(): List<Student> {
+        return studentDao.findAll()
+    }
+
+    // define endpoint to get student by id
+    @GetMapping("/students/{id}")
+    fun getStudentById(@PathVariable id: Long): Student {
+        return studentDao.findById(id)!!
     }
 }
