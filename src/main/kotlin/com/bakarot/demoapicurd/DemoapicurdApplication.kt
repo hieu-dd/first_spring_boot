@@ -9,3 +9,4 @@ class DemoapicurdApplication
 fun main(args: Array<String>) {
     runApplication<DemoapicurdApplication>(*args)
 }
+
