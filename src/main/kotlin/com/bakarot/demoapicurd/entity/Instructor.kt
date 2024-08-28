@@ -19,9 +19,16 @@ data class Instructor(
     @Column(name = "email")
     var email: String,
 
-    @OneToOne(cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
-    @JoinColumn(name = "instructor_detail_id")
-    var instructorDetail: InstructorDetail
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    var instructorDetail: InstructorDetail,
+
+    @OneToMany(
+        mappedBy = "instructor",
+        cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH],
+        fetch = FetchType.LAZY
+    )
+    var courses: MutableList<Course> = mutableListOf()
 )
 
 @Entity
