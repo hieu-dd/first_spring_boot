@@ -21,7 +21,14 @@ data class Course(
     )
     @JoinColumn(name = "instructor_id")
     @JsonIgnore
-    var instructor: Instructor
+    var instructor: Instructor,
+
+    @OneToMany(
+        cascade = [CascadeType.ALL, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH],
+        fetch = FetchType.LAZY,
+        mappedBy = "course"
+    )
+    var reviews: MutableList<Review> = mutableListOf()
 ) {
 
     override fun toString(): String {

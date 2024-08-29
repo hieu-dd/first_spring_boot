@@ -23,12 +23,31 @@ class CourseController(
         val instructor = instructorRepository.findById(instructorId).orElseThrow {
             RuntimeException("Instructor not found: $instructorId")
         }
-        val course = Course(
-            title = createCourseDTO.title,
-            instructor = instructor
+        val courseDb = courseRepository.save(
+            Course(
+                title = createCourseDTO.title,
+                instructor = instructor
+            )
         )
-        instructor.courses.add(course)
-        instructorRepository.save(instructor)
+        return ResponseEntity.ok(courseDb)
+    }
+
+    @PutMapping("instructors/{instructorId}/courses/{courseId}")
+    @Transactional
+    fun updateCourse(
+        @PathVariable instructorId: Long,
+        @PathVariable courseId: Long,
+        @RequestBody createCourseDTO: CreateCourseDTO
+    ): ResponseEntity<Course> {
+        val instructor = instructorRepository.findById(instructorId).orElseThrow {
+            RuntimeException("Instructor not found: $instructorId")
+        }
+        val course = courseRepository.findById(courseId).orElseThrow {
+            RuntimeException("Course not found: $courseId")
+        }
+        course.title = createCourseDTO.title
+        course.instructor = instructor
+        courseRepository.save(course)
         return ResponseEntity.ok(course)
     }
 }
