@@ -28,7 +28,19 @@ data class Course(
         fetch = FetchType.LAZY,
         mappedBy = "course"
     )
-    var reviews: MutableList<Review> = mutableListOf()
+    var reviews: MutableList<Review> = mutableListOf(),
+
+    @ManyToMany(
+        cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH],
+        fetch = FetchType.LAZY
+    )
+    @JoinTable(
+        name = "course_student",
+        joinColumns = [JoinColumn(name = "course_id")],
+        inverseJoinColumns = [JoinColumn(name = "student_id")]
+    )
+    @JsonIgnore
+    var students: MutableList<Student> = mutableListOf()
 ) {
 
     override fun toString(): String {
