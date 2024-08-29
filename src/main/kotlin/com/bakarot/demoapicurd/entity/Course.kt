@@ -1,7 +1,7 @@
 package com.bakarot.demoapicurd.entity
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
-import jakarta.persistence.criteria.CriteriaBuilder.In
 
 @Entity
 @Table(name = "course")
@@ -17,9 +17,10 @@ data class Course(
 
     @ManyToOne(
         cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH],
-        fetch = FetchType.EAGER
+        fetch = FetchType.LAZY
     )
     @JoinColumn(name = "instructor_id")
+    @JsonIgnore
     var instructor: Instructor
 ) {
 

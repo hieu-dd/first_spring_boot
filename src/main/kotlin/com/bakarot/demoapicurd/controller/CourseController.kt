@@ -5,30 +5,30 @@ import com.bakarot.demoapicurd.dao.InstructorRepository
 import com.bakarot.demoapicurd.dto.CreateCourseDTO
 import com.bakarot.demoapicurd.entity.Course
 import jakarta.transaction.Transactional
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.data.rest.webmvc.BasePathAwareController
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
 
-@RestController
-@RequestMapping("/api/instructors/{instructorId}/courses/")
+@BasePathAwareController
 class CourseController(
-    private val courseRepository: CourseRepository,
-    private val instructorRepository: InstructorRepository
+    private val instructorRepository: InstructorRepository,
+    private val courseRepository: CourseRepository
 ) {
-    @PostMapping
+    @RequestMapping("instructors/{instructorId}/courses", method = [RequestMethod.POST])
     @Transactional
-    fun createCourse(@PathVariable instructorId: Long, @RequestBody createCourseDTO: CreateCourseDTO) {
+    fun createCourse(
+        @PathVariable instructorId: Long,
+        @RequestBody createCourseDTO: CreateCourseDTO
+    ): ResponseEntity<Course> {
         val instructor = instructorRepository.findById(instructorId).orElseThrow {
             RuntimeException("Instructor not found: $instructorId")
         }
-        instructor.courses.add(
-            Course(
-                title = createCourseDTO.title,
-                instructor = instructor
-            )
+        val course = Course(
+            title = createCourseDTO.title,
+            instructor = instructor
         )
+        instructor.courses.add(course)
         instructorRepository.save(instructor)
+        return ResponseEntity.ok(course)
     }
 }
