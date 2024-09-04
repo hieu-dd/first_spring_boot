@@ -43,4 +43,6 @@ data class Student(
                     )
         """.trimIndent()
     }
+
+    fun string() = toString()
 }
