@@ -12,7 +12,7 @@ class DemoapicurdApplication {
     @Bean
     fun commandLineRunner(accountDao: AccountDao): CommandLineRunner {
         return CommandLineRunner { runner ->
-            accountDao.addStudent(Student(id = 0, "John", "Doe", ""))
+            println(accountDao.addStudent(Student(id = 0, "John", "Doe", "")))
         }
     }
 }

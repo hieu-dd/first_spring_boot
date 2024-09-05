@@ -1,6 +1,8 @@
 package com.bakarot.demoapicurd.aspect
 
+import com.bakarot.demoapicurd.entity.Student
 import org.aspectj.lang.JoinPoint
+import org.aspectj.lang.annotation.AfterReturning
 import org.aspectj.lang.annotation.Aspect
 import org.aspectj.lang.annotation.Before
 import org.aspectj.lang.annotation.Pointcut
@@ -27,6 +29,24 @@ class MyDemoReadJoinPointAspect {
         val args = joinPoint.args
         args.forEachIndexed { index, arg ->
             println("Argument $index: $arg")
+        }
+    }
+
+    @AfterReturning(
+        pointcut = "forPackage()",
+        returning = "result"
+    )
+    fun afterReturningPackage(joinPoint: JoinPoint, result: Any) {
+        println("\n=====>>> Executing @AfterReturning advice on package")
+
+        // Display the method signature
+        val method = joinPoint.signature.toShortString()
+        println("Method Signature: $method")
+
+        // Display the method return value
+        println("Return Value: $result")
+        (result as List<*>).forEach {
+            (it as Student).firstName = "Mr. ${it.firstName}"
         }
     }
 }

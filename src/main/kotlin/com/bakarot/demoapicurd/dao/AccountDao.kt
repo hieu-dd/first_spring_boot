@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component
 
 interface AccountDao {
     fun addAccount()
-    fun addStudent(student: Student)
+    fun addStudent(student: Student): List<Student>
 }
 
 @Component
@@ -15,12 +15,7 @@ class AccountDaoImpl : AccountDao {
         println("Account added")
     }
 
-    override fun addStudent(student: Student) {
-        println(
-            "Student added: " +
-                    "ID: ${student.id}, " +
-                    "Name: ${student.firstName}, " +
-                    "Email: ${student.email}"
-        )
+    override fun addStudent(student: Student): List<Student> {
+        return listOf(student)
     }
 }
