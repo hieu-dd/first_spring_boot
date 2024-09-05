@@ -12,7 +12,11 @@ class DemoapicurdApplication {
     @Bean
     fun commandLineRunner(accountDao: AccountDao): CommandLineRunner {
         return CommandLineRunner { runner ->
-            println(accountDao.addStudent(Student(id = 0, "John", "Doe", "")))
+            try {
+                println(accountDao.findStudent(2))
+            } catch (e: Exception) {
+                println("Main Exception: ${e.message}")
+            }
         }
     }
 }
